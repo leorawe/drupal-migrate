@@ -1,0 +1,91 @@
+id: d7_events
+label: Events
+audit: true
+migration_tags:
+  - Drupal 7
+# deriver: Drupal\node\Plugin\migrate\D7NodeDeriver
+migration_group: content_d7
+source:
+  plugin: d7_node
+  node_type: calendar
+process:
+  #  nid and vid commented out will allow them to autoincrement. Safe as long
+  #    as nothing else is referencing them.
+  #  nid: nid
+  #  vid: vid
+  title: title
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: "und"
+  uid:
+    plugin: default_value
+    default_value: 1
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  type:
+    plugin: default_value
+    default_value: event
+  #body: body
+  # "body/format":
+  #   plugin: default_value
+  #   default_value: ifde_advanced
+  body:
+    plugin: sub_process
+    source: body
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: fake_advanced
+  field_category:
+    plugin: migration_lookup
+    migration: d7_evcategories
+    source: field_category
+  field_start_date:
+    plugin: sub_process
+    source: field_date
+    process:
+      value:
+        plugin: format_date
+        from_format: "Y-m-d H:i:s"
+        to_format: 'Y-m-d\TH:i:s'
+        source: value
+  field_p_event_occurrence/target_id:
+    - plugin: migration_lookup
+      migration: d7_evparagraphs
+      no_stub: true
+      source_ids:
+        d7_evparagraphs: nid
+      source: nid
+    - plugin: extract
+      index:
+        - "0"
+  field_p_event_occurrence/target_revision_id:
+    - plugin: migration_lookup
+      migration: d7_evparagraphs
+      no_stub: true
+      source_ids:
+        d7_evparagraphs: nid
+      source: nid
+    - plugin: extract
+      index:
+        - 1
+  "field_address/value":
+    plugin: location_to_address_field
+    source: nid
+  "field_address/format":
+    plugin: default_value
+    default_value: plain_text
+  # Default Image will be set on content type for import.
+
+destination:
+  plugin: entity:node
+
+migration_dependencies:
+  required:
+    - d7_evcategories
+    - d7_evparagraphs

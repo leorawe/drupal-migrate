@@ -1,0 +1,17 @@
+id: content_d7
+label: Imports from Drupal 7
+description: Fake U Content from Drupal 7
+source_type: Drupal 7
+shared_configuration:
+  source:
+    key: migrated7
+
+# Here we set a dependency on the module itself.
+# This is necessary setting that deletes configs from a database
+# on uninstallation of the module.
+dependencies:
+  enforced:
+    module:
+      - fakeu_d7migrate
+      - migrate_drupal
+      - migrate_tools

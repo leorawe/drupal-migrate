@@ -1,0 +1,61 @@
+id: d7_contacts
+label: Contact Information
+audit: true
+migration_tags:
+  - Drupal 7
+migration_group: content_d7
+source:
+  plugin: d7_node
+  node_type: facultystaff
+process:
+  #  nid and vid commented out will allow them to autoincrement. Safe as long
+  #    as nothing else is referencing them.
+  #  nid: nid
+  #  vid: vid
+  title: title
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: "und"
+  uid:
+    plugin: default_value
+    default_value: 1
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  type:
+    plugin: default_value
+    default_value: contact_information
+  field_body:
+    plugin: sub_process
+    source: field_areas_of_interest_research
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: fake_advanced  
+  field_last_name:  field_ps_lname
+  field_first_name: field_ps_fname
+  field_job_title: field_title_position
+  field_office_location: field_ps_loc
+  field_phone: field_ps_ext
+  field_department:
+    plugin: sub_process
+    source: field_ps_dept
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: d7_depts
+        source: tid
+  field_contact_information_type:
+        plugin: callback
+        callable: fakeu_d7migrate_contact_types
+        source: field_ps_fsa/0/value
+  "field_email/value": field_ps_email/0/email
+destination:
+  plugin: entity:node
+migration_dependencies:
+   required:
+     - d7_depts

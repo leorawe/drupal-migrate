@@ -1,0 +1,10 @@
+name: "Fake University Drupal 7 Migration"
+type: module
+description: "migrate Fake University Drupal 7 content into D8"
+core: 8.x
+package: "FAKEU"
+dependencies:
+  - drupal:migrate
+  - drupal:migrate_plus
+  - drupal:migrate_tools
+  - drupal:migrate_drupal

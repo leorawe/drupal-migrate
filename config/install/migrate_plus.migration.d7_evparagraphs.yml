@@ -1,0 +1,28 @@
+id: d7_evparagraphs
+label: Event Occurrences - Dates
+audit: true
+migration_tags:
+  - Drupal 7
+migration_group: content_d7
+source:
+  plugin: d7_node
+  node_type: calendar  
+process:
+  field_start_date_time:
+    plugin: sub_process
+    source: field_date
+    process:
+      value:
+        plugin: format_date
+        from_format: 'Y-m-d H:i:s'
+        to_format: 'Y-m-d\TH:i:s'
+        source: value  
+  field_end_date_time:
+    plugin: check_end_date
+    source: field_date
+  
+  source_ids: nid
+
+destination:
+  plugin: 'entity_reference_revisions:paragraph'
+  default_bundle: event_occurrence

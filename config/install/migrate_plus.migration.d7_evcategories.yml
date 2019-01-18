@@ -1,0 +1,28 @@
+id: d7_evcategories
+label: Event Categories - taxonomy
+audit: true
+migration_tags:
+  - Drupal 7
+migration_group: content_d7
+deriver: Drupal\taxonomy\Plugin\migrate\D7TaxonomyTermDeriver
+source:
+  plugin: d7_taxonomy_term
+  bundle: events_category
+process:
+  tid: term_id
+  vid:
+     plugin: default_value
+     default_value: event_categories
+  name:
+    - 
+      plugin: callback
+      callable: fakeu_d7migrate_evcat
+      source: name
+    -
+      plugin: make_unique_entity_field
+      entity_type: taxonomy_term
+      field: name
+  weight: weight  
+destination:
+  plugin: entity:taxonomy_term
+  default_bundle: event_categories 

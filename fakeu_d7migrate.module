@@ -1,0 +1,100 @@
+<?php
+
+/**
+ * @file
+ * Hooks and callbacks for the "fakeu_d7migrate" module.
+ */
+
+use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\migrate\Row;
+
+/**
+ * Converts People Soft Departments to the correct Public Facing Values.
+ *
+ * @param string $old_dept
+ *   Old department code.
+ *
+ * @return string
+ *   New department code.
+ */
+function fakeu_d7migrate_depts_old2new($old_dept) {
+  $new_dept = $old_dept;
+ 
+  switch ($old_dept) {
+    case 'Mispelled School':
+      $new_dept = 'Spelled Correctly School';
+      break;
+
+    case 'Center for This':
+      $new_dept = 'Center for That';
+      break;  
+ 
+    case 'Controller\'s - Purchasing':
+          $new_dept = 'Purchasing';
+          break;   
+
+    }
+  return $new_dept;
+}
+
+
+/**
+ * Converts PS-FSA to Contact Type.
+ *
+ * @param string $old_type
+ *   Old contact type.
+ *
+ * @return string
+ *   New contact type.
+ */
+function fakeu_d7migrate_contact_types($old_type) {
+  $new_type = FALSE;
+  switch ($old_type) {
+    case 'ADJUNCT':
+      $new_type = 'Faculty';
+      break; 
+		  
+	case 'FACULTY':
+      $new_type = 'Faculty';
+      break;
+		  
+	case 'STAFF':
+      $new_type = 'Staff';
+      break;
+  }
+  return $new_type;
+}
+
+/**
+ * Converts Event Category to new Event Category.
+ *
+ * @param string $old_cat
+ *   Old category code.
+ *
+ * @return string $new_cat
+ *   New category code.
+ */
+function fakeu_d7migrate_evcat($old_cat) {
+     $new_cat = $old_cat;
+    
+     switch ($old_cat) {
+       case 'Film':
+          $new_cat= 'Performances';
+          break;
+        
+        case 'Academic Calendar':
+          $new_cat= 'Academic';
+          break;
+
+        case 'Theatre':
+          $new_cat= 'Performances';
+          break;
+         
+        case 'Workshops':
+          $new_cat= 'Workshops and Conferences';
+          break;
+            
+     }
+     return $new_cat;
+}          
