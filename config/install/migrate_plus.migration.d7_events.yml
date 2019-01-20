@@ -29,10 +29,6 @@ process:
   type:
     plugin: default_value
     default_value: event
-  #body: body
-  # "body/format":
-  #   plugin: default_value
-  #   default_value: ifde_advanced
   body:
     plugin: sub_process
     source: body
